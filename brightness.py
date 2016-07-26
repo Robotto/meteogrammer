@@ -6,15 +6,16 @@
 
 import RPi.GPIO as GPIO, time, os
 
-LDRpin=18
-PWMpin=12
+LDRpin=23
+PWMpin=18
 
-DEBUG = 1
+LDRtimeMAX=100000
+
 GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(PWMpin, GPIO.OUT)
-p = GPIO.PWM(PWMpin, 0.5) #50 % duty cycle to start
-p.start(1)
+p = GPIO.PWM(PWMpin, 100) #50Hz
+p.start(100) #50 % duty cycle to start
 
 def RCtime (RCpin):
         reading = 0
@@ -30,8 +31,16 @@ def RCtime (RCpin):
 
 try:
     while True:
-            #RCtime(18)     # Read RC timing using pin #18
-            dutyCycle=100*(rctimeMax/RCtime(LDRpin))
+            ldrTime=RCtime(LDRpin)
+            print "ldrTime: " + str(ldrTime)
+
+            if (ldrTime>LDRtimeMAX): #safety feature
+                    ldrTime=LDRtimeMAX
+
+            dutyCycle=100-int(100*(LDRtimeMAX-ldrTime)/float(LDRtimeMAX)) #force float division, and then truncate back to integer
+
+            print "dutycycle: "+str(dutyCycle)
+
             p.ChangeDutyCycle(dutyCycle)
             time.sleep(0.1)
 
