@@ -32,14 +32,14 @@ def RCtime (RCpin):
 try:
     while True:
             ldrTime=RCtime(LDRpin)
-            print "ldrTime: " + str(ldrTime)
+            # print "ldrTime: " + str(ldrTime)
 
             if (ldrTime>LDRtimeMAX): #safety feature
                     ldrTime=LDRtimeMAX
 
             dutyCycle=100-int(100*(LDRtimeMAX-ldrTime)/float(LDRtimeMAX)) #force float division, and then truncate back to integer
 
-            print "dutycycle: "+str(dutyCycle)
+            # print "dutycycle: "+str(dutyCycle)
 
             p.ChangeDutyCycle(dutyCycle)
             time.sleep(0.1)
