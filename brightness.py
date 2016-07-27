@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-# Example for RC timing reading for Raspberry Pi
-# Must be used with GPIO 0.3.1a or later - earlier verions
-# are not fast enough!
+# Uses Adafruit's Example for RC timing reading for Raspberry Pi found here: 
+# https://learn.adafruit.com/basic-resistor-sensor-reading-on-raspberry-pi/basic-photocell-reading
+# 
+# The LDR timing controls the duty cycle of a PWM output to a PNP transistor controlling the backlight on a modified 3.5" LCD
 
 import RPi.GPIO as GPIO, time, os
 
