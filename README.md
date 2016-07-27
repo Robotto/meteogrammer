@@ -38,7 +38,7 @@ Luckily i found [the schematic](./docs/3.5inch-RPi-LCD-A-Schematic.pdf) for the 
 
 The *brightness.py* script reads a value from a light sensitive resistor (by measuring the charge time of a 1µF capacitor) and sets a corresponding duty cycle for the PWM output
 
-###Pictures:
+## Pictures:
 
 Here's a look at the back of the LCD module. Notice the lm 1117 which generates the 3.3V which *used to be* hardwired to the LCD backlight anode, the middle pin is now connected to the emittor of the PNP transistor:
 
@@ -52,9 +52,17 @@ Here's a closeup of the side of the LCD module PCB which is under the display:
 
 ![](./docs/wiring.jpg)
 
-##Schematic of the modifications
+## Schematic of the modifications
 Here's a hand drawn schematic of the modifications i've made:
 
 ![](./docs/schematic.jpg)
 
 The base resistor can be calculated from the hFE of your chosen transistor and the backlight current which i have measured to be ~100mA.
+
+## Enclosure
+I used the tried and tested [flexbox postscript file](http://www.thingiverse.com/thing:17240) to start a design which i then adapted with holes that match a raspberryPi and the display module. I ended up with the design shown here, which is available in *[meteoPI_box.svg](./meteoPI_box.svg)*
+
+![](./docs/box/empty.jpg)
+![](./docs/box/pimounted.jpg)
+![](./docs/box/ldr.jpg)
+![](./docs/box/final.jpg)
