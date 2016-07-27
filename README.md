@@ -48,7 +48,7 @@ Here's where i cut the trace to the LCD backlight common anode (pin 1 on the fle
 
 ![](./docs/flexPCB_closeup.jpg)
 
-Here's a closeup of the side of the LCD module PCB which is under the display:
+Here's a closeup of the LCD module PCB under the display, pin numbers for the connector match those of the RaspberryPi, how convenient:
 
 ![](./docs/wiring.jpg)
 
