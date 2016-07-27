@@ -13,13 +13,15 @@ Will auto reload the image every 10 seconds.. which is probably a totally overki
 
 From a non x environment i would use:
 <pre><code>
-fbi
+fbi -T 2 -d /dev/fb1 -noverbose -t 300 /home/pi/meteogrammer/*.png -cachemem 0
 </code></pre>
-in some sort of slideshow mode so it would update the image every -t seconds ...
+(found in showMeteogram.sh)
+
+(Even though you ask fbi nicely to not cache anything, it still will, unless the slideshow consists of at least 3 images. 
+This is worked around by creating 2 symlinks to the meteogram.png as detailed by [Jamie Jackson here](http://blog.jacobean.net/?p=941))
 
 It would be the responsibility of the user to update the meteogram image periodically by running the meteogram.sh command in an appropriate location.
-
 Here's a crontab that runs it every 15 minutes:
 <pre><code>
-*/15 * * * * /home/pi/meteogrammer/meteogram.sh > /home/pi/meteogrammer/cron.log
+*/15 * * * * /home/pi/meteogrammer/refreshMeteogram.sh > /home/pi/meteogrammer/cron.log
 </code></pre>
