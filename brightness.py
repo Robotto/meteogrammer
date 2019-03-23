@@ -13,14 +13,18 @@ PWMpin=18
 
 LDRtimeMAX=100000
 dutyCycleOffset=-1
-lowPassAlpha=25
-meanLdrTime=0 #startupvalue
+#lowPassAlpha=25
+sleepTime=60*5
+numSamples=5
+sumLdrTime=0
+avgLdrTime=0 #startupvalue
+
 
 GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(PWMpin, GPIO.OUT)
-p = GPIO.PWM(PWMpin, 100) #50Hz
-p.start(100) #50 % duty cycle to start
+p = GPIO.PWM(PWMpin, 50) #100Hz
+p.start(100) #100% duty cycle to start
 
 
 def RCtime (RCpin):
@@ -37,17 +41,25 @@ def RCtime (RCpin):
 
 try:
     while True:
-            rawLdrTime=RCtime(LDRpin)
 
-            print "rawLdrTime:  " + str(rawLdrTime)
+            sumLdrTime=0
 
-            meanLdrTime=((meanLdrTime*lowPassAlpha)+rawLdrTime)/(lowPassAlpha+1)
+            for x in range(0, numSamples):
+                rawLdrTime=RCtime(LDRpin)
 
-            meanLdrTime=np.clip(meanLdrTime,0,LDRtimeMAX) #make sure it's within range
+                print "rawLdrTime sample %d:  " % (x) + str(rawLdrTime)
 
-            print "meanLdrTime: " + str(meanLdrTime)
+		sumLdrTime+=rawLdrTime
 
-            dutyCycle=dutyCycleOffset+100-int(100*(LDRtimeMAX-meanLdrTime)/float(LDRtimeMAX)) #force float division, and then truncate back to integer
+            #meanLdrTime=((meanLdrTime*lowPassAlpha)+rawLdrTime)/(lowPassAlpha+1)
+
+            avgLdrTime=sumLdrTime/numSamples
+
+            avgLdrTime=np.clip(avgLdrTime,0,LDRtimeMAX) #make sure it's within range
+
+            print "avgLdrTime: " + str(avgLdrTime)
+
+            dutyCycle=dutyCycleOffset+100-int(100*(LDRtimeMAX-avgLdrTime)/float(LDRtimeMAX)) #force float division, and then truncate back to integer
 
             dutyCycle=np.clip(dutyCycle,0,100) #constrain the duty cycle to allowed values
 
@@ -55,7 +67,9 @@ try:
 
             p.ChangeDutyCycle(dutyCycle)
 
-            #time.sleep(0.01)
+            print "waiting for %d seconds..." % (sleepTime)
+
+            time.sleep(sleepTime)
 
 
 #cleanup:
